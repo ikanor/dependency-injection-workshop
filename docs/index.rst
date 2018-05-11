@@ -1,0 +1,6 @@
+**********
+playground
+**********
+
+.. automodule:: playground
+   :members:
