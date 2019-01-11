@@ -6,20 +6,23 @@ import doctest
 
 import playground
 
-from playground import factorial
+from playground import StoreTransfers
 
-with description('Basic tests'):
+___ = Spy()
 
-    with context('Doc Tests'):
+with description('Store Transfers Module'):
 
-        with it('runs ok'):
-            failed, tested = doctest.testmod(playground)
-            expect(failed).to(equal(0))
+    with it('sends waybills'):
+        scenario_id = 99
+        recipient = 'test@test.com'
 
-    with context('Factorial basics'):
+        store_transfers = StoreTransfers()
+        store_transfers.send_waybills(scenario_id, recipient)
 
-        with it('computes factorial'):
-            expect(factorial(0)).to(be(1))
-            expect(factorial(1)).to(be(1))
-            expect(factorial(3)).to(be(6))
-            expect(factorial(5)).to(be(120))
+        expect(___.run).to(have_been_called_with(contain(
+            'SELECT * FROM store_transfer_orders')
+        ))
+        expect(___.send).to(have_been_called_with(
+            recipient, ANY_ARG
+        ))
+
